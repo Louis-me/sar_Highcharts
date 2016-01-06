@@ -1,0 +1,44 @@
+sar -u 1 10 | sed  '1,3d'|sed '$d' > sar_cpu.txt
+02:21:24 PM       CPU     %user     %nice   %system   %iowait    %steal     %idle
+02:21:24 PM       all      0.89      0.05      1.29      0.23      0.00     97.54
+02:21:25 PM       all      0.89      0.05      1.29      0.23      0.00     97.54
+02:21:26 PM       all      0.89      0.05      1.29      0.23      0.00     97.54
+02:21:27 PM       all      0.89      0.05      1.29      0.23      0.00     97.54
+02:21:28 PM       all      0.89      0.05      1.29      0.23      0.00     97.54
+%user 在用户模式中运行进程所花的时间
+%nice 运行正常进程所花的时间
+%system 在内核模式（系统）中运行进程所花的时间
+%iowait 没有进程在该CPU上执行时，处理器等待I/O完成的时间
+%idle 没有进程在该CPU上执行的时间
+如果 %iowait 的值过高，表示硬盘存在I/O瓶颈
+如果 %idle 的值高但系统响应慢时，有可能是 CPU 等待分配内存，此时应加大内存容量
+如果 %idle 的值持续低于 10，则系统的 CPU 处理能力相对较低，表明系统中最需要解决的资源是 CPU。
+
+sar -r 1 10 | sed  '1,3d'|sed '$d' > sar_men.txt
+02:21:24 PM kbmemfree kbmemused  %memused kbbuffers  kbcached kbswpfree kbswpused  %swpused  kbswpcad
+02:21:24 PM   2884304   1267572     30.53    335216    795552   2048248         0      0.00         0
+02:21:25 PM   2884428   1267448     30.53    335216    795552   2048248         0      0.00         0
+02:21:26 PM   2884428   1267448     30.53    335216    795552   2048248         0      0.00         0
+02:21:27 PM   2884428   1267448     30.53    335216    795552   2048248         0      0.00         0
+02:21:28 PM   2884552   1267324     30.52    335216    795552   2048248         0      0.00         0
+kbmemfree 空闲内存大小
+kbmemused 内存使用量大小
+%memused 内存使用量百分比
+kbbuffers 内存buffers大小
+kbcached 内存cached大小
+kbswpfree 空闲swap大小
+kbswpused swap使用量大小
+%swpused swap使用量百分比
+
+
+sar -b 1 2 | sed  '1,3d'|sed '$d' > sar_IO.txt
+4:50:33          tps      rtps      wtps   bread/s   bwrtn/s
+14:50:34         0.99      0.00      0.99      0.00      7.92
+14:50:35         4.00      0.00      4.00      0.00    136.00
+Average:         2.49      0.00      2.49      0.00     71.64
+
+tps: 每秒向磁盘设备请求数据的次数，包括读、写请求，为rtps与wtps的和。出于效率考虑，每一次IO下发后并不是立即处理请求，而是将请求合并(merge)，这里tps指请求合并后的请求计数。
+rtps: 每秒向磁盘设备的读请求次数
+wtps: 每秒向磁盘设备的写请求次数
+bread: 每秒从磁盘读的bytes数量
+bwrtn: 每秒向磁盘写的bytes数量

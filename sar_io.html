@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/highcharts.js"></script>
+    <script type="text/javascript" src="themes/theme.js"></script>
+    <script type="text/javascript" src="js/exporting.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/highchartsModel.js"></script>
+    <script type="text/javascript" src="js/highchartsBase.js"></script>
+    <title>硬盘IO使用情况</title>
+    <script>
+        $(function () {
+            var rtps= [];
+            var wtps = [];
+            var rsk = [];
+            var wsk = [];
+            var categories = [];
+            var temp2;
+            $.get( "txt/sar_io.txt", function( data ) {
+                var resourceContent = data.toString(); // can be a global variable too...
+                var rc = resourceContent.split("\n");
+                for(var i=0; i<rc.length; i++){
+                    temp2 = getNotNullArr(rc[i].split(" "));
+                    rtps.push(parseFloat(temp2[3]));
+                    wtps.push(parseFloat(temp2[4]));
+                    rsk.push(to1024(temp2[5]));
+                    wsk.push(to1024(temp2[6]));
+                    categories.push("第"+i+"秒");
+                }
+                set_h_title("硬盘IO使用情况 1");
+                set_h_sub_title("test.com");
+                set_h_xaxis_setp(5);
+                set_h_tooltip("");
+                set_h_yaxis_title("IO使用情况");
+                set_h_xaxis_categories(categories);
+                set_h_series( [{name: '读请求',data:rtps},{name: '写请求',data:wtps},{name: '读KB',data:rsk},{name: '写KB',data:wsk}]);
+                highchartsinit("#container",get_h_title(),get_h_sub_title(),get_h_xaxis_setp(),get_h_xaxis_categories(),get_h_yaxis_title(),get_h_tooltip(),get_h_series());
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div id="container" style="min-width:700px;height:400px"></div>
+<div>
+    <a href="index.htm">CPU使用情况</a>
+    <a href="sar_men.html">内存使用情况</a>
+    <a href="sar_io.html">硬盘IO使用情况</a>
+</div>
+</body>
+</html>
