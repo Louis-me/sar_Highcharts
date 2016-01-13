@@ -20,13 +20,14 @@
                 var rc = resourceContent.split("\n");
                 for(var i=0; i<rc.length; i++){
                  temp = getNotNullArr(rc[i].split(" "));
+                    console.log(temp);
                     idle.push(parseFloat(temp[temp.length-1]));
-                    categories.push("第"+i+"秒");
+                    categories.push(temp[0]);
                     iowait.push(parseFloat(temp[6]));
                 }
                 set_h_title("cpu使用情况");
                 set_h_sub_title("test.com");
-                set_h_xaxis_setp(20);
+                set_h_xaxis_setp(1);
                 set_h_tooltip("%");
                 set_h_yaxis_title("cpu使用情况");
                 set_h_xaxis_categories(categories);

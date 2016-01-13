@@ -1,10 +1,7 @@
-基于js hcharts分析 服务器中sar 的日志：
+#基于js hcharts分析 服务器中sar 的日志：
 
-参考官网：http://www.hcharts.cn/
-
-
-
-cpu,内存，硬盘io信息，删掉了第1-3行和最后一行，这样有利于js分析
+* 参考官网：http://www.hcharts.cn/
+* cpu,内存，硬盘io信息，删掉了第1-3行和最后一行，这样有利于js分析
 
 shell 脚本如下：
 
@@ -27,6 +24,10 @@ sar -b 1 $1 |sed '1,3d'|sed '$d' > sar_io_1.txt
 
 ![IO统计图](io.png  "io统计图")
 
-sar参数说明：
+*sar参数说明：
 
 http://github.com/284772894/sar_Highcharts/raw/master/txt/sar.txt)
+
+### 2015-1-13更新历史
+* 分类改为时间统计
+![IO统计图](sar_date.png  "io统计图")
