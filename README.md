@@ -9,7 +9,7 @@ shell ½Å±¾ÈçÏÂ£º
 #!/bin/bash
 if (( $# != 1))
 then
-    echo "please input sum time:"
+    echo "please input sum times:"
     exit 1
 fi
 sar -u 1 $1 | sed '1,3d'|sed '$d' > sar_cpu_1.txt
